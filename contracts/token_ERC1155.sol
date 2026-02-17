@@ -26,16 +26,3 @@ contract ERC_1155 is ERC1155, Ownable {
         _mintBatch(to, ids, amounts, "");
     }
 }
-
-/*
-
-["0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2","0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2","0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2"]
-
-
-["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4","0x5B38Da6a701c568545dCfcB03FcB875f56beddC4","0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"]
-
-["100","200","400"]
-
-["1","2","4"]
-
-*/

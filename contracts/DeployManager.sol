@@ -72,7 +72,6 @@ contract DeployManager is Ownable {
     function updateFee (address _contractAddress, uint256 _newFee) external onlyOwner{
         require(contractsData[_contractAddress].registeredAt > 0, "contract does not exists");
 
-        // რადგან გვჭირდებოდა emit-ითვის _oldFee, შესაბამისად ჯერ ძველი მონაცემი შევინახეთ და შემდეგ მოვახდინეთ მისი ცვლილება ახლით
         uint256 _oldFee = contractsData[_contractAddress].fee;
         contractsData[_contractAddress].fee = _newFee;
 

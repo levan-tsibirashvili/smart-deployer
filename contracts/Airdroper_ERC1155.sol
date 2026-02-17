@@ -5,7 +5,7 @@ import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "./IUtilityContract.sol";
 
 contract Airdroper_ERC1155 is IUtilityContract {
-    // Proxy-ს შემთხვევაში ცვლადებს კონსტრუქტორში არ ვანიჭებთ მნიშვნელობას
+
     address public owner; 
     IERC1155 public tokenAddress;
     bool public initDone;
@@ -36,7 +36,7 @@ contract Airdroper_ERC1155 is IUtilityContract {
 
         tokenAddress = IERC1155(_tokenAddress);
         contractName = _name;
-        owner = _ownerAddress; // აქ ვნიშნავთ რეალურ მფლობელს
+        owner = _ownerAddress; 
 
         for(uint256 i = 0; i < _ids.length; i++) {
             if(_amounts[i] == 0) revert InvalidAmount();
