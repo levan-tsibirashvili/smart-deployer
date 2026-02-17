@@ -4,7 +4,8 @@ pragma solidity ^0.8.33;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./Airdroper_ERC1155.sol";
+import "./ERC1155 Airdroper/ERC1155Airdroper.sol";
+import "./ERC20 Airdroper/ERC20Airdroper.sol";
 import "./IUtilityContract.sol";
 
 contract DeployManager is Ownable {
