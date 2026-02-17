@@ -17,12 +17,9 @@ contract ERC20Airdroper is IUtilityContract, Ownable{
 
     mapping(uint256 => uint256) public leftedTokensForAirdrop;
 
-    error NotOwner();
     error AlreadyInitialized();
     error ArraysLengthMismatch();
-    error InvalidAmount();
     error InvalidData();
-    error ReceiverZeroAddress();
     error NotEnoughApprovedTokens();
     error TokenTransferFailed();
 
@@ -50,11 +47,11 @@ contract ERC20Airdroper is IUtilityContract, Ownable{
 
             bool success = tokenAddress.transferFrom(treasuryAddress, _receivers[i], _amounts[i]);
             if(!success) revert TokenTransferFailed();
-        }
-       
+        }       
     }
 
     function getInitData(string calldata _name, address _tokenaddress, uint256 _amount, address _treasury, address _owner) external pure returns (bytes memory) {
         return abi.encode(_name, _tokenaddress, _amount, _treasury, _owner);
     }
+    
 }

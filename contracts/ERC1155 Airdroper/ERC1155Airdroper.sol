@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.33;
 
-import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-import "contracts/IUtilityContract.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "../IUtilityContract.sol";
 
-contract ERC1155Airdroper is IUtilityContract {
+contract ERC1155Airdroper is IUtilityContract, Ownable {
 
-    address public owner; 
+    constructor () Ownable(msg.sender) {}
+
     IERC1155 public tokenAddress;
     bool public initDone;
     string public contractName;
+    address public treasuryAddress;
 
     mapping(uint256 => uint256) public leftedTokensForAirdrop;
 
@@ -20,23 +23,18 @@ contract ERC1155Airdroper is IUtilityContract {
     error ReceiverZeroAddress();
     error NotApproved();
 
-    modifier onlyOwner() {
-        if (msg.sender != owner) revert NotOwner();
-        _;
-    }
-
     function initialize(bytes memory _initData) external returns(bool) {
         if(initDone) revert AlreadyInitialized();
 
-        (string memory _name, address _tokenAddress, uint256[] memory _ids, uint256[] memory _amounts, address _ownerAddress) = 
-            abi.decode(_initData, (string, address, uint256[], uint256[], address));
+        (string memory _name, address _tokenAddress, uint256[] memory _ids, uint256[] memory _amounts, address _owner, address _treasury) = 
+            abi.decode(_initData, (string, address, uint256[], uint256[], address, address));
 
         if(_amounts.length != _ids.length) revert ArraysLengthMismatch();
-        if(_ownerAddress == address(0)) revert ReceiverZeroAddress();
 
         tokenAddress = IERC1155(_tokenAddress);
         contractName = _name;
-        owner = _ownerAddress; 
+        treasuryAddress = _treasury;
+        Ownable.transferOwnership(_owner);
 
         for(uint256 i = 0; i < _ids.length; i++) {
             if(_amounts[i] == 0) revert InvalidAmount();
@@ -51,7 +49,7 @@ contract ERC1155Airdroper is IUtilityContract {
         uint256 len = _receivers.length;
         if (len != _ids.length || len != _amounts.length) revert ArraysLengthMismatch();
         
-        if (!tokenAddress.isApprovedForAll(msg.sender, address(this))) revert NotApproved();
+        if (!tokenAddress.isApprovedForAll(treasuryAddress, address(this))) revert NotApproved();
 
         for (uint256 i = 0; i < len; i++) {
             address to = _receivers[i];
@@ -61,15 +59,16 @@ contract ERC1155Airdroper is IUtilityContract {
             if (to == address(0)) revert ReceiverZeroAddress();
             
             uint256 remaining = leftedTokensForAirdrop[id];
+            
             if (amount > remaining) revert InvalidAmount();
             
             leftedTokensForAirdrop[id] = remaining - amount;
 
-            tokenAddress.safeTransferFrom(msg.sender, to, id, amount, "");
+            tokenAddress.safeTransferFrom(treasuryAddress, to, id, amount, "");
         }
     }
 
-    function getInitData(string memory _name, address _token, uint256[] memory _ids, uint256[] memory _amounts, address _owner) external pure returns (bytes memory) {
-        return abi.encode(_name, _token, _ids, _amounts, _owner);
+    function getInitData(string memory _name, address _token, uint256[] memory _ids, uint256[] memory _amounts, address _owner, address _treasury) external pure returns (bytes memory) {
+        return abi.encode(_name, _token, _ids, _amounts, _owner, _treasury);
     }
 }
