@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// @author Levan Tsibirashvili
 /// @notice Enables owners to airdrop ERC20 tokens to multiple recipients
 contract ERC20Airdroper is AbstractUtilityContract, Ownable {
+    
     /// @notice Initializes Ownable with deployer
     constructor() payable Ownable(msg.sender) {}
 

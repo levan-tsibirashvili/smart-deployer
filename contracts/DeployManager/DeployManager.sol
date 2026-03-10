@@ -16,9 +16,9 @@ contract DeployManager is IDeployManager, Ownable, ERC165 {
 
     /// @dev Stores registered contracts information
     struct ContractInfo {
-        uint256 fee; /// @notice Deployment fee (in wei)
-        bool isDeployable; /// @notice Shows deployable status
-        uint256 registeredAt; /// @notice Registration timestamp
+        uint256 fee;            /// @notice Deployment fee (in wei)
+        bool isDeployable;      /// @notice Shows deployable status
+        uint256 registeredAt;   /// @notice Registration timestamp
     }
 
     /// @dev Maps deployer address to an array of deployed contracts addresses

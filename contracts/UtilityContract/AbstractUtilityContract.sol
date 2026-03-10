@@ -44,7 +44,7 @@ abstract contract AbstractUtilityContract is IUtilityContract, ERC165 {
         if (!IDeployManager(_deployManager).supportsInterface(interfaceId)) {
             revert NotDeployManager();
         }
-
+        
         return true;
     }
 
