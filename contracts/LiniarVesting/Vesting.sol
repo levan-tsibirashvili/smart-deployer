@@ -12,6 +12,7 @@ import "./IVesting.sol";
 /// @notice Manages token vesting schedules for beneficiaries
 /// @dev Inherits IVesting, AbstractUtilityContract, Ownable
 contract Vesting is IVesting, AbstractUtilityContract, Ownable {
+    
     using VestingLib for IVesting.VestingInfo;
 
     /// @notice Initializes the contract with deploy manager, token, and owner
@@ -19,21 +20,12 @@ contract Vesting is IVesting, AbstractUtilityContract, Ownable {
 
     /// @notice The ERC20 token that is being vested
     IERC20 public token;
-    
+
     /// @notice The total amount of tokens that have been allocated for vesting
     uint256 public allocatedTokens;
 
     /// @notice A mapping of beneficiary addresses to their vesting information
     mapping(address => IVesting.VestingInfo) public vestings;
-
-    /// @dev Restricts `initialize` to one-time execution
-    modifier notInitialized() {
-        require(!initialized, AlreadyInitialized());
-        _;
-    }
-
-    /// @dev Tracks initialization status
-    bool private initialized;
 
     /// @inheritdoc IVesting
     function claim() public {

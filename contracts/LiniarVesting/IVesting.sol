@@ -4,7 +4,7 @@ pragma solidity ^0.8.29;
 /// @title Vesting Interface
 /// @notice Provides a standard interface for token vesting contracts
 interface IVesting {
-
+    
     /// @notice Information about a beneficiary's vesting schedule
     /// @param totalAmount Total number of tokens to be vested
     /// @param startTime Timestamp when vesting begins
@@ -110,9 +110,6 @@ interface IVesting {
 
     /// @notice Reverts if there are no tokens available to withdraw
     error NothingToWithdraw();
-
-    /// @dev Reverts if contract already initialized
-    error AlreadyInitialized();
 
     /// @notice Claims all tokens currently available for the caller according to their vesting schedule
     function claim() external;
